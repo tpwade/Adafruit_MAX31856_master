@@ -73,34 +73,41 @@ typedef enum
 
 class Adafruit_MAX31856 {
  public:
-  Adafruit_MAX31856(int8_t spi_cs, int8_t spi_mosi, int8_t spi_miso, int8_t spi_clk);
-  Adafruit_MAX31856(int8_t spi_cs);
+  
+    // added for explicit select pin mode
+    Adafruit_MAX31856(int8_t spi_mosi, int8_t spi_miso, int8_t spi_clk);
+    Adafruit_MAX31856(void);
+    
+    boolean begin(int8_t spi_cs);
+    
+    void setThermocoupleType(int8_t spi_cs, uint8_t type);
+    max31856_thermocoupletype_t getThermocoupleType(int8_t spi_cs);
 
-  boolean begin(void);
+    uint8_t readFault(int8_t spi_cs);
+    void oneShotTemperature(int8_t spi_cs, int8_t fastFlag);
 
-  void setThermocoupleType(max31856_thermocoupletype_t type);
-  max31856_thermocoupletype_t getThermocoupleType(void);
-
-  uint8_t readFault(void);
-  void oneShotTemperature(void);
-
-  float readCJTemperature(void);
-  float readThermocoupleTemperature(void);
-
-  void setTempFaultThreshholds(float flow, float fhigh);
-  void setColdJunctionFaultThreshholds(int8_t low, int8_t high);
-
+    float readCJTemperature(int8_t spi_cs);
+    float readThermocoupleTemperature(int8_t spi_cs);
+    void readThermocoupleTemperatureFast(int8_t spi_cs, float *tcTemp, float *cjTemp, int8_t fastFlag);
+    
+    void setTempFaultThreshholds(int8_t spi_cs, float flow, float fhigh);
+    void setColdJunctionFaultThreshholds(int8_t spi_cs, int8_t low, int8_t high);
+  
+  
  private:
-  int8_t _sclk, _miso, _mosi, _cs;
+    //int8_t _sclk, _miso, _mosi, _cs;
+    int8_t _sclk, _miso, _mosi;
 
-  void readRegisterN(uint8_t addr, uint8_t buffer[], uint8_t n);
 
-  uint8_t  readRegister8(uint8_t addr);
-  uint16_t readRegister16(uint8_t addr);
-  uint32_t readRegister24(uint8_t addr);
-
-  void     writeRegister8(uint8_t addr, uint8_t reg);
-  uint8_t spixfer(uint8_t addr);
+    // added for explicit select pin mode
+    void readRegisterN(int8_t spi_cs, uint8_t addr, uint8_t buffer[], uint8_t n);
+    
+    uint8_t  readRegister8(int8_t spi_cs, uint8_t addr);
+    uint16_t readRegister16(int8_t spi_cs, uint8_t addr);
+    uint32_t readRegister24(int8_t spi_cs, uint8_t addr);
+    
+    void     writeRegister8(int8_t spi_cs, uint8_t addr, uint8_t reg);
+    uint8_t spixfer(uint8_t addr);
 };
 
 #endif

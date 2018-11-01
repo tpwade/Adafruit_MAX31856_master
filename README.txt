@@ -14,3 +14,16 @@ products from Adafruit!
 Written by Limor Fried/Ladyada  for Adafruit Industries.  
 BSD license, check license.txt for more information
 All text above must be included in any redistribution
+
+
+
+Modified by Trevor Wade, Oct 2018
+Main differences are:
+* that the device select pin (_cs) is no longer being hard-coded, and is now 
+  provided as an input variable
+* now provide a fast read option.  Basically the sensors need some delay 
+  (~150us) after a read is triggered.  This option allows to trigger all
+  sensors and then have bulk delay, and is generally better for multiple 
+  sensors
+
+For information on installing libraries, see: http://www.arduino.cc/en/Guide/Libraries
